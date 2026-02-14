@@ -70,15 +70,18 @@
             background: #f1948a;
             color: white;
             border: none;
-            padding: 12px 28px;
+            padding: 15px 30px;
             border-radius: 50px;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(241, 148, 138, 0.3);
-            z-index: 20;
+            box-shadow: 0 4px 15px rgba(241, 148, 138, 0.4);
+            z-index: 30;
             margin-top: 5px;
+            transition: all 0.3s ease;
         }
+
+        .music-btn:active { transform: scale(0.9); background: #e57373; }
     </style>
 </head>
 <body>
@@ -109,14 +112,26 @@
         </canvas>
     </div>
 
-    <button class="music-btn" onclick="playMusic()">🎵 Toca aquí, Abuela</button>
+    <button id="playBtn" class="music-btn" onclick="iniciarRegalo()">🎵 Toca aquí, Abuela</button>
     
-    <audio id="bgMusic" src="musica_abula.mp3"></audio>
+    <audio id="bgMusic" preload="auto">
+        <source src="musica_abula.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
-        function playMusic() {
-            var audio = document.getElementById("bgMusic");
-            audio.play().catch(function(e) { console.log("Error: ", e); });
+        const audio = document.getElementById("bgMusic");
+        const btn = document.getElementById("playBtn");
+
+        function iniciarRegalo() {
+            // Truco para móviles: forzar la carga y reproducción
+            audio.load(); 
+            audio.play().then(() => {
+                btn.innerHTML = "✨ Sonando para ti ✨";
+                btn.style.background = "#8e2b21";
+            }).catch(error => {
+                alert("Abuela, por favor presiona de nuevo para escuchar la música ❤️");
+                console.log("Error: ", error);
+            });
         }
 
         window.onload = function() {
@@ -153,4 +168,3 @@
     </script>
 </body>
 </html>
-
